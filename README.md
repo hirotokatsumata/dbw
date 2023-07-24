@@ -27,14 +27,17 @@ be used to estimate average outcomes in missing outcome cases.
 
 ## How to Cite
 
-Katsumata, Hiroto. 2023. “How Should We Estimate Inverse Probability
-Weights with Possibly Misspecified Propensity Score Models?”
+<font size="4"> Katsumata, Hiroto. 2023. “How Should We Estimate Inverse
+Probability Weights with Possibly Misspecified Propensity Score Models?”
+</font>
 
 ## Installation
 
-You can install the development version of **dbw** from GitHub:
+You can install the development version of **dbw** from
+[GitHub](https://github.com/hirotokatsumata/dbw):
 
 ``` r
+devtools::install_github("hirotokatsumata/dbw")
 ```
 
 ## Example

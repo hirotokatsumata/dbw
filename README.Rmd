@@ -26,14 +26,15 @@ The point estimate of the parameter of interest and its uncertainty as well as c
 
 
 ## How to Cite
-
+<font size="4"> 
 Katsumata, Hiroto. 2023. "How Should We Estimate Inverse Probability Weights with Possibly Misspecified Propensity Score Models?"
-
+</font>
 
 ## Installation
 
-You can install the development version of **dbw** from GitHub:
+You can install the development version of **dbw** from [GitHub](https://github.com/hirotokatsumata/dbw):
 ``` r
+devtools::install_github("hirotokatsumata/dbw")
 ```
 
 ## Example

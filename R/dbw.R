@@ -144,6 +144,14 @@
 #' @references Katsumata, Hiroto. 2023. "How Should We Estimate Inverse 
 #'   Probability Weights with Possibly Misspecified Propensity Score Models?"
 #'
+#' Imai, Kosuke and Marc Ratkovic. 2014. "Covariate Balancing Propensity Score."
+#'   Journal of the Royal Statistical Society, Series B (Statistical Methodology) 
+#'   76 (1): 243--63.
+#'
+#' Hainmueller, Jens. 2012. "Entropy Balancing for Causal Effects: A 
+#'   Multivariate Reweighting Method to Produce Balanced Samples in 
+#'   Observational Studies." Political Analysis 20 (1): 25--46.
+#'
 #' @seealso \code{\link{summary.dbw}}, \code{\link{std}}, \code{\link[mgcv]{gam}}
 #'
 #' @examples
