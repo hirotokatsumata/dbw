@@ -28,3 +28,5 @@ Depends:
     R (>= 2.10)
 Suggests: 
     mgcv
+URL: https://github.com/hirotokatsumata/dbw
+BugReports: https://github.com/hirotokatsumata/dbw/issues
