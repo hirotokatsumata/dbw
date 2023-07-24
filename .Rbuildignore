@@ -1,0 +1,10 @@
+^dbw\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^\.gitignore$
+^man/figures
+^\.git
+^LICENSE\.md$
+^cran-comments\.md$
+^CRAN-RELEASE$

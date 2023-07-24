@@ -1,0 +1,30 @@
+Package: dbw
+Title: Doubly Robust Distribution Balancing Weighting Estimation
+Version: 0.0.0.9000
+Authors@R: 
+    person("Hiroto", "Katsumata", 
+           email = "hrt.katsumata@gmail.com", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5901-8844"))
+Description: Implements the doubly robust distribution balancing weighting 
+    proposed by Katsumata (2023), which improves the augmented inverse 
+    probability weighting (AIPW) by estimating propensity scores with estimating 
+    equations suitable for the pre-specified parameter of interest (e.g., the 
+    average treatment effects or the average treatment effects on the treated) 
+    and estimating outcome models with the estimated inverse probability weights.
+    It also implements the covariate balancing propensity score proposed by Imai 
+    and Ratkovic (2014) <doi:10.1111/rssb.12027> and the entropy balancing 
+    weighting proposed by Hainmueller (2012) <doi:10.1093/pan/mpr025>, which use 
+    covariate balancing conditions in propensity score estimation. The point 
+    estimate of the parameter of interest and its uncertainty as well as 
+    coefficients for propensity score estimation and outcome regression are 
+    produced using the M-estimation. The same functions can be used to estimate 
+    average outcomes in missing outcome cases.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    mgcv
