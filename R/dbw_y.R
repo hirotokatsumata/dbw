@@ -4,8 +4,6 @@ dbw_y <- function (formula_y, df, fulldf,
   family <- stats::gaussian
   if (method_y %in% c("logit", "gambinom")) {
     family <- stats::quasibinomial
-  } else if (method_y == "slbinom") {
-    family <- stats::binomial
   }
   if (method_y %in% c("wls", "logit")) {
     result <- stats::glm(formula = formula_y, family = family, data = df, 

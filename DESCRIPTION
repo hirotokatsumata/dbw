@@ -4,7 +4,7 @@ Version: 0.1.0
 Authors@R: 
     person("Hiroto", "Katsumata", 
            email = "hrt.katsumata@gmail.com", 
-           role = c("aut", "cre"),
+           role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-5901-8844"))
 Description: Implements the doubly robust distribution balancing weighting 
     proposed by Katsumata (2023), which improves the augmented inverse 
