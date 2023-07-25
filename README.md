@@ -706,8 +706,6 @@ fitdbwmr <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                 estimand = "ATE", method = "dbw",
                 method_y = "wls", data = df2, vcov = TRUE, 
                 lambda = 0.01, weights = NULL, clevel = 0.95)
-#> Warning in dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand =
-#> "ATE", : Use scale() function before dbw() function when lambda > 0
 summary(fitdbwmr)
 #> Warning in summary.dbw(fitdbwmr): When lambda > 0, the uncertainty estimates may not be appropriate
 #>   because the normal approximation may not hold.

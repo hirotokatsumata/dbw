@@ -1,6 +1,10 @@
+# dbw 0.2.2
+### Bug fixes
+* Scale checks when lambda > 0
+
 # dbw 0.2.1
 ### Bug fixes
-* outcome name extraction for method == "AO"
+* Outcome name extraction for method == "AO"
 
 # dbw 0.2.0
 ### Minor changes
