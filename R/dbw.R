@@ -357,16 +357,16 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
       )
     }
     formula_y0 <- formula_y
-    formula_y_chr <- deparse(formula_y)
+    formula_y_chr <- deparse1(formula_y)
     names_y <- substr(x = formula_y_chr, 
                       start = 1, 
                       stop = regexpr(pattern = "~", text = formula_y_chr) - 1)
     res_gam <- mgcv::gam(formula = formula_y, data = data, fit = FALSE)
-    formula_y <- paste(names_y, deparse(res_gam$pred.formula))
+    formula_y <- paste(names_y, deparse1(res_gam$pred.formula))
     formula_y <- stats::as.formula(formula_y)
   }
   if (estimand == "AO") {
-    formula_y_chr <- deparse(formula_y)
+    formula_y_chr <- deparse1(formula_y)
     names_y <- substr(x = formula_y_chr, 
                       start = 1, 
                       stop = regexpr(pattern = "~", text = formula_y_chr) - 1)

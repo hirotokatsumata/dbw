@@ -1,3 +1,7 @@
+# dbw 0.2.1
+### Bug fixes
+* outcome name extraction for method == "AO"
+
 # dbw 0.2.0
 ### Minor changes
 * Add ``vcov'' option, which indicates whether to estimate the variance.
