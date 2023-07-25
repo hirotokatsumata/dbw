@@ -66,7 +66,7 @@ mlew <- function (initval, lambda, response, x_ps, weights, svdx_ps) {
 }
 
 ## Distribution balancing weighting internal function
-dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_ps, outcome, z, weights, varcov, formula_y) {
+dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_ps, outcome, z, weights, vcov, formula_y) {
   names_z <- colnames(z)
   names_z[apply(z, 2, stats::sd) == 0] <- "(Intercept)"
   names_x_ps <- colnames(x_ps)
@@ -239,6 +239,9 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     est <- sum(est_weights * resid_y + weights * y_hat / sum(weights))
     gamma <- result_y$gamma
     ## Variance estimation
+    if (vcov == FALSE) {
+      varcov <- NULL
+    } else {
     if (method == "eb") {
       hs1 <- varcov_ebw(ps = ps, beta_trans = coef, lambda = lambda, 
                         response = response, x_ps_trans = x_ps0, 
@@ -280,7 +283,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                                  weights = weights, y_hat = y_hat, 
                                  resid_y = resid_y, z_trans = z, 
                                  est = est)
-    } else { # method_y %in% c("logit", "gam", "gambinom")
+    } else { # method_y == "logit"
       hs3 <- varcov_logit_gamma(ps = ps, response = response, 
                                 weights = weights, y_hat = y_hat, 
                                 resid_y = resid_y, z_trans = z)
@@ -302,6 +305,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     score <- as.matrix(cbind(hs1$score, hs2$score, hs4$score))
     Sigma <- t(score) %*% (score * weights)
     varcov <- solve(H) %*% Sigma %*% solve(t(H))
+    }
   } else if (estimand == "ATC") {
     ## Outcome model estimation
     result_y <- dbw_y(formula_y = formula_y,
@@ -315,6 +319,9 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                (1 - response) * weights * resid_y / sum((1 - response) * weights))
     gamma <- result_y$gamma
     ## Variance estimation
+    if (vcov == FALSE) {
+      varcov <- NULL
+    } else {
     if (method == "mlew") {
       hs1 <- varcov_mlew(ps = ps, beta_trans = coef, lambda = lambda, 
                          response = response, x_ps_trans = x_ps0, 
@@ -337,7 +344,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
       hs5 <- varcov_atc_wls_gamma(ps = ps, response = response, 
                                   weights = weights, resid_y = resid_y, 
                                   z_trans = z, est = est)
-    } else { # method_y %in% c("logit", "gam", "gambinom")
+    } else { # method_y == "logit"
       hs3 <- varcov_logit_gamma(ps = ps, response = response, 
                                 weights = weights, y_hat = y_hat, 
                                 resid_y = resid_y, z_trans = z)
@@ -359,6 +366,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     score <- as.matrix(cbind(hs1$score, hs2$score, hs4$score))
     Sigma <- t(score) %*% (score * weights)
     varcov <- solve(H) %*% Sigma %*% solve(t(H))
+    }
   } else if (estimand == "ATE") {
     ## Outcome model estimation
     result_y_t <- dbw_y(formula_y = formula_y,
@@ -387,6 +395,9 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     gamma_t <- result_y_t$gamma
     gamma_c <- result_y_c$gamma
     ## Variance estimation
+    if (vcov == FALSE) {
+      varcov <- NULL
+    } else {
     if (method == "eb") {
       hs11 <- varcov_ebw(ps = ps_t, beta_trans = coef_t, lambda = lambda, 
                          response = response, x_ps_trans = x_ps0, 
@@ -471,7 +482,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                                     resid_y = resid_y_c, z_trans = z, 
                                     est = ao_c)
       }
-    } else { # method_y %in% c("logit", "gam", "gambinom")
+    } else { # method_y == "logit"
       hs13 <- varcov_logit_gamma(ps = ps_t, response = response, 
                                  weights = weights, y_hat = y_hat_t, 
                                  resid_y = resid_y_t, z_trans = z)
@@ -531,6 +542,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                              0))
     Sigma <- t(score) %*% (score * weights)
     varcov <- solve(H) %*% Sigma %*% solve(t(H))
+    }
   } else { # estimand == "ATEcombined"
     ## Outcome model estimation
     result_y_t <- dbw_y(formula_y = formula_y,
@@ -559,6 +571,9 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     gamma_t <- result_y_t$gamma
     gamma_c <- result_y_c$gamma
     ## Variance estimation
+    if (vcov == FALSE) {
+      varcov <- NULL
+    } else {
     hs11 <- varcov_cbw(ps = ps, beta_trans = coef, lambda = lambda, 
                        response = response, x_ps_trans = x_ps0, 
                        weights = weights)
@@ -591,7 +606,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                                   weights = weights, y_hat = y_hat_c, 
                                   resid_y = resid_y_c, z_trans = z, 
                                   est = ao_c)
-    } else { # method_y %in% c("logit", "gam", "gambinom")
+    } else { # method_y == "logit"
       hs13 <- varcov_logit_gamma(ps = ps, response = response, 
                                  weights = weights, y_hat = y_hat_t, 
                                  resid_y = resid_y_t, z_trans = z)
@@ -631,13 +646,16 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
                              0))
     Sigma <- t(score) %*% (score * weights)
     varcov <- solve(H) %*% Sigma %*% solve(t(H))
+    }
   }
   ## Move varcov for QoI to the top row and column
-  varcov1 <- varcov[nrow(varcov), -ncol(varcov)]
-  varcov2 <- varcov[-nrow(varcov), ncol(varcov)]
-  varcov <- rbind(c(varcov[nrow(varcov), ncol(varcov)], varcov1),
-                  cbind(varcov2, varcov[-nrow(varcov), -ncol(varcov)]))
-  varcov <- as.matrix(varcov)
+  if (vcov == TRUE) {
+    varcov1 <- varcov[nrow(varcov), -ncol(varcov)]
+    varcov2 <- varcov[-nrow(varcov), ncol(varcov)]
+    varcov <- rbind(c(varcov[nrow(varcov), ncol(varcov)], varcov1),
+                    cbind(varcov2, varcov[-nrow(varcov), -ncol(varcov)]))
+    varcov <- as.matrix(varcov)
+  }
   ## End of outcome model estimation and variance estimation
   ##########
   ## Effective sample size
@@ -666,7 +684,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     names(coef) <- paste0("ps_", names_x_ps)
     gamma <- list(coef_y_t = gamma_t, coef_y_c = gamma_c)
     y_hat <- list(predicted_y_t = y_hat_t, predicted_y_c = y_hat_c)
-    if (method_y %in% c("wls", "logit")) {
+    if (vcov == TRUE) {
       names_varcov <- c(estimand0, names(coef), names_gamma_t, 
                         names_gamma_c, "mu_t", "mu_c")
       colnames(varcov) <- names_varcov
@@ -677,7 +695,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
       names(gamma) <- paste0("outcome_", names_z)
     }
     names(coef) <- paste0("ps_", names_x_ps)
-    if (method_y %in% c("wls", "logit")) {
+    if (vcov == TRUE) {
       colnames(varcov) <- c(estimand0, names(coef), names(gamma))
       rownames(varcov) <- c(estimand0, names(coef), names(gamma))
     }
@@ -699,7 +717,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     ps <- list(ps_t = ps_t, ps_c = ps_c)
     gamma <- list(coef_y_t = gamma_t, coef_y_c = gamma_c)
     y_hat <- list(predicted_y_t = y_hat_t, predicted_y_c = y_hat_c)
-    if (method_y %in% c("wls", "logit")) {
+    if (vcov == TRUE) {
       names_varcov <- c(estimand0, names_coef_t, names_gamma_t, "mu_t", 
                         names_coef_c, names_gamma_c, "mu_c")
       colnames(varcov) <- names_varcov
