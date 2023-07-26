@@ -156,7 +156,7 @@ M-estimation framework.
 
 When using regularization for propensity score estimation (\code{lambda > 0}),
 you should standardize the covariates for propensity score estimation
-by \code{\link[base]{scale}} before using \code{dbw}.
+by \code{\link{std_comp}} before using \code{dbw}. See example below for more details.
 
 For the ATE estimation, it is recommended to specify the \code{estimand} as
 \code{"ATE"}, but you may specify it as \code{"ATEcombined"} when using the
@@ -166,7 +166,9 @@ the former should produce smaller biases and variances. Note that the
 former estimates two propensity scores for each observation by estimating
 two propensity score functions with different estimating equations.
 
-For the AO estimation, the outcome variable name must not contain spaces.
+For the AO estimation, NA values for the outcome variable for missing cases
+(the response variable taking "0") are not deleted. For this processing, the
+outcome variable name must not contain spaces.
 }
 \examples{
 # Simulation from Kang and Shafer (2007) and Imai and Ratkovic (2014)
@@ -266,11 +268,17 @@ summary(fitmlem)
 
 # Distribution balancing weighting with regularization
 # Standardization
-df2 <- data.frame(df0, scale(Xmis))
-fitdbwmr <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
-                estimand = "ATE", method = "dbw",
-                method_y = "wls", data = df2, vcov = TRUE, 
-                lambda = 0.01, weights = NULL, clevel = 0.95)
+res_std_comp <- std_comp(formula_y = formula_y, 
+                         formula_ps = formula_ps_m, 
+                         estimand = "ATE", method_y = "wls", 
+                         data = df, std = TRUE,
+                         weights = NULL)
+fitdbwmr <- dbw(formula_y = formula_y, 
+                formula_ps = res_std_comp$formula_ps, 
+                estimand = "ATE", method = "dbw", method_y = "wls",
+                data = res_std_comp$data, vcov = TRUE, 
+                lambda = 0.01, weights = res_std_comp$weights, 
+                clevel = 0.95)
 summary(fitdbwmr)
 
 # Covariate balancing weighting function with an estimating equation 
@@ -342,7 +350,7 @@ Multivariate Reweighting Method to Produce Balanced Samples in
 Observational Studies." Political Analysis 20 (1): 25--46.
 }
 \seealso{
-\code{\link{summary.dbw}}, \code{\link[base]{scale}}, \code{\link[mgcv]{gam}}
+\code{\link{summary.dbw}}, \code{\link{std_comp}}, \code{\link[mgcv]{gam}}
 }
 \author{
 Hiroto Katsumata

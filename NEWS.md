@@ -1,15 +1,21 @@
+# dbw 0.3.0
+### Minor changes
+* Add "std_comp()" function, which generates a complete-case data frame with standardized covariates for propensity score estimation. This function is meant to be used before dbw() with regularization (lambda > 0).
+### Bug fixes
+* incomplete case adjustment for weights.
+
 # dbw 0.2.2
 ### Bug fixes
-* Scale checks when lambda > 0
+* Scale checks when lambda > 0.
 
 # dbw 0.2.1
 ### Bug fixes
-* Outcome name extraction for method == "AO"
+* Outcome name extraction for method == "AO".
 
 # dbw 0.2.0
 ### Minor changes
-* Add ``vcov'' option, which indicates whether to estimate the variance.
-* Delete unused ``std'' function.
+* Add "vcov" option, which indicates whether to estimate the variance.
+* Delete unused "std" function.
 
 # dbw 0.1.0
 ### Minor changes
