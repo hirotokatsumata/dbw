@@ -1,4 +1,4 @@
-#' Generates standardized complete cases
+#' Generate standardized complete cases
 #'
 #' Standardizes covariates for propensity score estimation before the 
 #' distribution balancing weighting \code{\link{dbw}} with the regularization.

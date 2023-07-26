@@ -92,6 +92,10 @@ formula_ps_m <- stats::as.formula(treat ~ x1mis + x2mis +
 # Formula for a misspecified outcome model
 formula_y <- stats::as.formula(y ~ x1mis + x2mis + x3mis + x4mis)
 
+# Set plot margins
+oldpar <- par(no.readonly = TRUE) # Just for adjusting plot margins
+par(mar = c(5.1, 5.1, 4.1, 2.1)) # Just for adjusting plot margins
+
 # Misspecified propensity score model
 
 # Distribution balancing weighting without regularization
@@ -130,6 +134,8 @@ fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                method_y = "wls", data = df, lambda = 0, 
                weights = NULL, clevel = 0.95)
 plot(fitmlem, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
+
+par(oldpar)
 
 # Display the covariate balance matrix
 cb <- plot(fitdbwm, addcov = ~ x1 + x2 + x3 + x4, plot = FALSE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/std_comp.R
 \name{std_comp}
 \alias{std_comp}
-\title{Generates standardized complete cases}
+\title{Generate standardized complete cases}
 \usage{
 std_comp(
   formula_y,

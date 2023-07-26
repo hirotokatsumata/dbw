@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.dbw.R
 \name{summary.dbw}
 \alias{summary.dbw}
-\title{Summarizing the distribution balancing weighting estimation results}
+\title{Summarize the distribution balancing weighting estimation results}
 \usage{
 \method{summary}{dbw}(object, ...)
 }

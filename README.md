@@ -725,61 +725,61 @@ summary(fitdbwmr)
 #> ############################################################
 #> ATE estimate:
 #>     Estimate Std. Error z value Pr(>|z|)    
-#> ATE    6.912     0.8254   8.374        0 ***
+#> ATE    6.924     0.8382    8.26 2.22e-16 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> ############################################################
 #> 
 #> Estimate of E[Y(1)] and E[Y(0)]:
 #>      Estimate Std. Error z value Pr(>|z|)    
-#> mu_t    218.4      1.263   172.9        0 ***
-#> mu_c    211.5      1.226   172.5        0 ***
+#> mu_t    218.4      1.266   172.5        0 ***
+#> mu_c    211.5      1.271   166.4        0 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> 
 #> Coefficients for the propensity score model estimation for estimating E[Y(1)]:
 #>                  Estimate Std. Error z value  Pr(>|z|)    
-#> ps_t_(Intercept) -0.21462    0.07772 -2.7616 5.753e-03  **
-#> ps_t_x1mis       -0.88024    0.14021 -6.2781 3.428e-10 ***
-#> ps_t_x2mis        0.19113    0.09894  1.9319 5.337e-02   .
-#> ps_t_x3mis       -0.02532    0.12606 -0.2009 8.408e-01    
-#> ps_t_x4mis        0.29439    0.15984  1.8418 6.551e-02   .
+#> ps_t_(Intercept)  -0.2467    0.07443 -3.3148 9.171e-04 ***
+#> ps_t_x1mis        -0.8770    0.13832 -6.3402 2.294e-10 ***
+#> ps_t_x2mis         0.1906    0.09606  1.9839 4.726e-02   *
+#> ps_t_x3mis        -0.0254    0.12319 -0.2062 8.367e-01    
+#> ps_t_x4mis         0.2921    0.15354  1.9024 5.712e-02   .
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> 
 #> Coefficients for the propensity score model estimation for estimating E[Y(0)]:
-#>                   Estimate Std. Error  z value  Pr(>|z|)    
-#> ps_c_(Intercept) -0.280880     0.1508 -1.86306 6.245e-02   .
-#> ps_c_x1mis       -1.550856     0.2443 -6.34699 2.196e-10 ***
-#> ps_c_x2mis       -0.005312     0.1611 -0.03298 9.737e-01    
-#> ps_c_x3mis        0.519468     0.2610  1.99044 4.654e-02   *
-#> ps_c_x4mis        0.383983     0.1620  2.36976 1.780e-02   *
+#>                  Estimate Std. Error  z value  Pr(>|z|)    
+#> ps_c_(Intercept) -0.35981     0.1884 -1.91018 5.611e-02   .
+#> ps_c_x1mis       -1.56758     0.2805 -5.58798 2.297e-08 ***
+#> ps_c_x2mis       -0.01004     0.1845 -0.05443 9.566e-01    
+#> ps_c_x3mis        0.52870     0.2873  1.84018 6.574e-02   .
+#> ps_c_x4mis        0.39297     0.1858  2.11459 3.446e-02   *
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> 
 #> Coefficients for the outcome model estimation for estimating E[Y(1)]:
-#>                       Estimate Std. Error z value  Pr(>|z|)    
-#> outcome_t_(Intercept)  218.422     0.7331 297.944 0.0000000 ***
-#> outcome_t_x1mis         26.279     0.7290  36.047 0.0000000 ***
-#> outcome_t_x2mis          2.312     0.8359   2.766 0.0056792  **
-#> outcome_t_x3mis         -4.142     1.2200  -3.395 0.0006867 ***
-#> outcome_t_x4mis         18.086     1.1617  15.568 0.0000000 ***
+#>                       Estimate Std. Error z value Pr(>|z|)    
+#> outcome_t_(Intercept)  218.429     0.7348 297.271 0.000000 ***
+#> outcome_t_x1mis         26.260     0.7236  36.291 0.000000 ***
+#> outcome_t_x2mis          2.319     0.8374   2.770 0.005608  **
+#> outcome_t_x3mis         -4.106     1.2229  -3.357 0.000787 ***
+#> outcome_t_x4mis         18.087     1.1634  15.546 0.000000 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> 
 #> Coefficients for the outcome model estimation for estimating E[Y(0)]:
 #>                       Estimate Std. Error z value  Pr(>|z|)    
-#> outcome_c_(Intercept)  211.510     0.6818 310.203 0.0000000 ***
-#> outcome_c_x1mis         25.975     1.1052  23.503 0.0000000 ***
-#> outcome_c_x2mis         -3.901     1.0578  -3.688 0.0002259 ***
-#> outcome_c_x3mis          3.608     1.5212   2.372 0.0176901   *
-#> outcome_c_x4mis         21.970     0.9786  22.450 0.0000000 ***
+#> outcome_c_(Intercept)  211.505     0.7457 283.622 0.0000000 ***
+#> outcome_c_x1mis         25.823     1.1242  22.969 0.0000000 ***
+#> outcome_c_x2mis         -3.899     1.0598  -3.679 0.0002341 ***
+#> outcome_c_x3mis          3.721     1.5223   2.444 0.0145149   *
+#> outcome_c_x4mis         21.946     0.9753  22.502 0.0000000 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 #> 
 #> Effective sample size for the ATE estimation:
-#>   For estimating E[Y(1)]: 303.11 
-#>   For estimating E[Y(0)]:   361.95
+#>   For estimating E[Y(1)]: 301.7 
+#>   For estimating E[Y(0)]:   366.39
 
 # Covariate balancing weighting function with an estimating equation 
 #  for the original covariate balancing propensity score method
@@ -1101,12 +1101,16 @@ summary(fitmlem_hj)
 
 ``` r
 # Distribution balancing weighting without regularization
+oldpar <- par(no.readonly = TRUE) # Just for adjusting plot margins
+par(mar = c(5.1, 5.1, 4.1, 2.1)) # Just for adjusting plot margins
 plot(fitdbwm, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
 ```
 
 <img src="man/figures/README-covariate balance-1.png" width="100%" />
 
 ``` r
+par(oldpar)
+
 # Display the covariate balance matrix
 cb <- plot(fitdbwm, addcov = ~ x1 + x2 + x3 + x4, plot = FALSE)
 cb

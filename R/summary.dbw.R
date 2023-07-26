@@ -1,4 +1,4 @@
-#' Summarizing the distribution balancing weighting estimation results
+#' Summarize the distribution balancing weighting estimation results
 #'
 #' Prints a summary of a fitted \code{dbw} object.
 #'

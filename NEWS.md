@@ -1,3 +1,7 @@
+# dbw 0.4.0
+### Minor changes
+* Slightly change the internal calculation of eta when lambda > 0.
+
 # dbw 0.3.0
 ### Minor changes
 * Add "std_comp()" function, which generates a complete-case data frame with standardized covariates for propensity score estimation. This function is meant to be used before dbw() with regularization (lambda > 0).
