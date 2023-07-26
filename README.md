@@ -701,19 +701,26 @@ summary(fitmlem)
 
 # Distribution balancing weighting with regularization
 # Standardization
-df2 <- data.frame(df0, scale(Xmis))
-fitdbwmr <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
-                estimand = "ATE", method = "dbw",
-                method_y = "wls", data = df2, vcov = TRUE, 
-                lambda = 0.01, weights = NULL, clevel = 0.95)
+res_std_comp <- std_comp(formula_y = formula_y, 
+                         formula_ps = formula_ps_m, 
+                         estimand = "ATE", method_y = "wls", 
+                         data = df, std = TRUE,
+                         weights = NULL)
+fitdbwmr <- dbw(formula_y = formula_y, 
+                formula_ps = res_std_comp$formula_ps, 
+                estimand = "ATE", method = "dbw", method_y = "wls",
+                data = res_std_comp$data, vcov = TRUE, 
+                lambda = 0.01, weights = res_std_comp$weights, 
+                clevel = 0.95)
 summary(fitdbwmr)
 #> Warning in summary.dbw(fitdbwmr): When lambda > 0, the uncertainty estimates may not be appropriate
 #>   because the normal approximation may not hold.
 #> 
 #> Call: 
-#> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "dbw", method_y = "wls", data = df2, vcov = TRUE, 
-#>     lambda = 0.01, weights = NULL, clevel = 0.95)
+#> dbw(formula_y = formula_y, formula_ps = res_std_comp$formula_ps, 
+#>     estimand = "ATE", method = "dbw", method_y = "wls", data = res_std_comp$data, 
+#>     vcov = TRUE, lambda = 0.01, weights = res_std_comp$weights, 
+#>     clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -742,8 +749,8 @@ summary(fitdbwmr)
 #> 
 #> Coefficients for the propensity score model estimation for estimating E[Y(0)]:
 #>                   Estimate Std. Error  z value  Pr(>|z|)    
-#> ps_c_(Intercept) -0.280879     0.1508 -1.86306 6.245e-02   .
-#> ps_c_x1mis       -1.550856     0.2443 -6.34700 2.196e-10 ***
+#> ps_c_(Intercept) -0.280880     0.1508 -1.86306 6.245e-02   .
+#> ps_c_x1mis       -1.550856     0.2443 -6.34699 2.196e-10 ***
 #> ps_c_x2mis       -0.005312     0.1611 -0.03298 9.737e-01    
 #> ps_c_x3mis        0.519468     0.2610  1.99044 4.654e-02   *
 #> ps_c_x4mis        0.383983     0.1620  2.36976 1.780e-02   *
@@ -765,7 +772,7 @@ summary(fitdbwmr)
 #> outcome_c_(Intercept)  211.510     0.6818 310.203 0.0000000 ***
 #> outcome_c_x1mis         25.975     1.1052  23.503 0.0000000 ***
 #> outcome_c_x2mis         -3.901     1.0578  -3.688 0.0002259 ***
-#> outcome_c_x3mis          3.608     1.5212   2.372 0.0176902   *
+#> outcome_c_x3mis          3.608     1.5212   2.372 0.0176901   *
 #> outcome_c_x4mis         21.970     0.9786  22.450 0.0000000 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 

@@ -144,11 +144,17 @@ summary(fitmlem)
 
 # Distribution balancing weighting with regularization
 # Standardization
-df2 <- data.frame(df0, scale(Xmis))
-fitdbwmr <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
-                estimand = "ATE", method = "dbw",
-                method_y = "wls", data = df2, vcov = TRUE, 
-                lambda = 0.01, weights = NULL, clevel = 0.95)
+res_std_comp <- std_comp(formula_y = formula_y, 
+                         formula_ps = formula_ps_m, 
+                         estimand = "ATE", method_y = "wls", 
+                         data = df, std = TRUE,
+                         weights = NULL)
+fitdbwmr <- dbw(formula_y = formula_y, 
+                formula_ps = res_std_comp$formula_ps, 
+                estimand = "ATE", method = "dbw", method_y = "wls",
+                data = res_std_comp$data, vcov = TRUE, 
+                lambda = 0.01, weights = res_std_comp$weights, 
+                clevel = 0.95)
 summary(fitdbwmr)
 
 # Covariate balancing weighting function with an estimating equation 
