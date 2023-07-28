@@ -55,8 +55,7 @@ dca <- function (init, lambda, response, x_ps, weights, svdx_ps,
   for (r in 1:maxiter1) {
     maxiter2_2 <- round(maxiter2 * min(c(0.5 + 10 * r / maxiter1), 1))
     beta_r <- beta
-    eta_lambda <- sum(lambda * svdtranscoef(coef = beta, svdx = svdx_ps))
-    eta <- sum(eta_lambda + (1 - ps) + (response / ps - 1) * 0.1) / sum(response * (1 - ps) / ps)
+    eta <- sum((1 - ps) + (response / ps - 1) * max(0, 0.2 - r * 0.01)) / sum(response * (1 - ps) / ps)
     if (eta > 1) {
       for (t in 1:maxiter2_2) {
         beta_old <- beta
