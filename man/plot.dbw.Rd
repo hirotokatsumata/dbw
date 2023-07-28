@@ -56,8 +56,9 @@ Summarizes and plots covariate balance between treatment and control groups
 before and after the distribution balancing weighting.
 }
 \details{
-Position of the legend is determined internally. Set \code{absolute = TRUE} and
-\code{sort = TRUE} for choosing a better location.
+Estimated weights are normalized to sum to one. Position of the legend is
+determined internally. Set \code{absolute = TRUE} and \code{sort = TRUE} for choosing
+a better location automatically.
 }
 \examples{
 # Simulation from Kang and Shafer (2007) and Imai and Ratkovic (2014)

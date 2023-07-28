@@ -3,8 +3,9 @@
 #' Summarizes and plots covariate balance between treatment and control groups 
 #'   before and after the distribution balancing weighting.
 #'
-#' Position of the legend is determined internally. Set \code{absolute = TRUE} and
-#'   \code{sort = TRUE} for choosing a better location.
+#' Estimated weights are normalized to sum to one. Position of the legend is 
+#' determined internally. Set \code{absolute = TRUE} and \code{sort = TRUE} for choosing 
+#' a better location automatically.
 #'
 #' @export
 #'
@@ -133,6 +134,7 @@ plot.dbw <- function (x, addcov = NULL, standardize = TRUE, plot = TRUE,
   cov <- as.matrix(cbind(x_ps, z))
   colnames(cov) <- c(colnames(x_ps), names_z)
   original_weights <- x$original_weights
+  est_weights <- x$est_weights
   if (is.null(addcov) == 0) {
   	attr(data, which = "na.action") <- stats::na.pass
     formula2 <- stats::as.formula(addcov)
@@ -152,12 +154,16 @@ plot.dbw <- function (x, addcov = NULL, standardize = TRUE, plot = TRUE,
   type <- factor(type, levels = c("continuous", "binary"))
   if (x$estimand == "AO") {
     diff.adj <- apply(original_weights * cov, 2, sum) / sum(original_weights) - 
-                 apply(x$est_weights * cov * response, 2, sum)
+                 apply(est_weights * cov * response, 2, sum) / 
+                        sum(est_weights * response)
     diff.un <- apply(original_weights * cov, 2, sum) / sum(original_weights) - 
                 apply(original_weights * cov * response, 2, sum) / 
                        sum(original_weights * response)
   } else { # ATT, ATC, ATE, and ATEcombined
-    diff.adj <- apply(x$est_weights * cov * (2 * response - 1), 2, sum)
+    diff.adj <- apply(est_weights * cov * response, 2, sum) / 
+                      sum(est_weights * response) - 
+                 apply(est_weights * cov * (1 - response), 2, sum) / 
+                        sum(est_weights * (1 - response))
     diff.un <- apply(original_weights * cov * response, 2, sum) / 
                       sum(original_weights * response) - 
                 apply(original_weights * cov * (1 - response), 2, sum) / 

@@ -1,3 +1,7 @@
+# dbw 0.4.1
+### Minor changes
+* Normalize the estimated weights in "plot.dbw()" function.
+
 # dbw 0.4.0
 ### Minor changes
 * Slightly change the internal calculation of eta when lambda > 0.
