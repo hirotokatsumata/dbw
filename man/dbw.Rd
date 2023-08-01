@@ -14,7 +14,9 @@ dbw(
   vcov = TRUE,
   lambda = 0,
   weights = NULL,
-  clevel = 0.95
+  clevel = 0.95,
+  tol = 1e-10,
+  init_lambda = 0.01
 )
 }
 \arguments{
@@ -64,6 +66,12 @@ means no regularization.}
 to be used in the fitting process. Should be NULL or a numeric vector.}
 
 \item{clevel}{confidence levels. Default is 0.95.}
+
+\item{tol}{a tolerance parameter for \code{method = "dbw"}. Default is 1e-10.}
+
+\item{init_lambda}{a parameter for \code{method = "dbw"} to set the lambda value
+for the initial values estimation, where \eqn{lambda_init = lambda * init_lambda}.
+Default is 0.01.}
 }
 \value{
 \code{dbw} returns an object of "dbw" class.
@@ -138,7 +146,9 @@ standard maximum likelihood estimation (\code{method = "mle"}). For the
 covariate balancing weighting and entropy balancing weighting, \code{dbw} runs
 much faster than the original functions (\code{\link[CBPS]{CBPS}} and \code{\link[ebal]{ebalance}})
 by using loss-function-based algorithms, which also results in more
-accurate covariate balance.
+accurate covariate balance. For the ATT and ATC estimation, the distribution
+balancing weighting, covariate balancing weighting, and entropy balancing
+weighting are theoretically equivalent and \code{dbw} implements accordingly.
 
 The parameter of interest is estimated by the AIPW estimator, where inverse
 probability weights are standardized within each treatment group by being
@@ -148,7 +158,8 @@ devided by the size of the group after being calculated as
 \eqn{(t_i - \pi_i) / \pi_i} for the ATC estimation, and
 \eqn{t_i / \pi_i} for the missing outcome cases. The resulting inverse probability
 weights sum to 1 for the distribution balancing weighting, covariate
-balancing weighting, and entropy balancing weighting estimators.
+balancing weighting, and entropy balancing weighting estimators without
+regularization.
 
 The variance-covariance matrix for the parameter of interest and ancillary
 parameters is calculated using the sandwich variance formula obtained in the

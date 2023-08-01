@@ -1,10 +1,15 @@
 ## Distribution balancing weighting variance-covariance matrix estimation function
 varcov_dbw <- function (ps, beta_trans, lambda, response, x_ps_trans, weights) {
   n <- length(response)
-  eta <- sum(1 - ps) / sum(1 - response)
-  H <- t(x_ps_trans) %*% (x_ps_trans * (eta * response / ps - ps) * (1 - ps) * weights) / n
+  n0 <- sum(1 - response)
+  sum1 <- sum(1 - ps) / n0
+  sum2 <- sum(response / ps - 1)
+  H1 <- t(x_ps_trans) %*% (x_ps_trans * (-ps + sum1 * response / ps + sum2 * (2 * ps - 1) * ps) * (1 - ps) * weights) / n
+  H2 <- 2 * apply(ps * (1 - ps) / n0 * x_ps_trans, 2, sum) %*% 
+            t(apply(response * (1 - ps) / ps * x_ps_trans, 2, sum)) / n
+  H <- H1 + H2
   H <- H + diag(lambda) / n
-  score <- ((1 - eta * response / ps) * (1 - ps) * x_ps_trans + 
+  score <- ((1 - sum1 * response / ps - sum2 * ps / n0) * (1 - ps) * x_ps_trans + 
             beta_trans * lambda) / n
   list(H = H, score = score)
 }

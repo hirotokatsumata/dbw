@@ -1,5 +1,5 @@
 ## Distribution balancing weighting estimation function
-dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps) {
+dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps, tol, init_lambda) {
   ## Borrowing initial values from cbw
   init <- stats::optim(par = initval, 
                        fn = cbloss, 
@@ -7,13 +7,13 @@ dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps) {
                        method = "BFGS", 
                        control = list(fnscale = 1, trace = FALSE), 
                        hessian = FALSE,
-                       estimand = "AO", lambda = lambda, response = response, x_ps = x_ps,
+                       estimand = "AO", lambda = lambda * init_lambda, response = response, x_ps = x_ps,
                        weights = weights, svdx_ps = svdx_ps)$par
 
   ## DC algorithm
   result <- dca(init = init, lambda = lambda, response = response, x_ps = x_ps, 
                 weights = weights, svdx_ps = svdx_ps, 
-                maxiter1 = 400, maxiter2 = 400, tol1 = 1e-8, tol2 = 1e-10)
+                tol = tol, maxiter = 1000, min_r = 50)
   result
 }
 
@@ -66,7 +66,9 @@ mlew <- function (initval, lambda, response, x_ps, weights, svdx_ps) {
 }
 
 ## Distribution balancing weighting internal function
-dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_ps, outcome, z, weights, vcov, formula_y) {
+dbw_internal <- function (estimand, data, lambda, method, method_y, 
+                          response, x_ps, outcome, z, weights, 
+                          vcov, formula_y, tol, init_lambda) {
   names_z <- colnames(z)
   names_z[apply(z, 2, stats::sd) == 0] <- "(Intercept)"
   names_x_ps <- colnames(x_ps)
@@ -96,9 +98,11 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
     ## Distribution balancing weighting
     if (estimand == "ATE") {
       result_w_t <- dbw0(initval = initval, lambda = lambda, response = response, 
-                         x_ps = x_ps, weights = weights, svdx_ps = svdx_ps)
+                         x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
+                         tol = tol, init_lambda = init_lambda)
       result_w_c <- dbw0(initval = initval, lambda = lambda, response = 1 - response, 
-                         x_ps = x_ps, weights = weights, svdx_ps = svdx_ps)
+                         x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
+                         tol = tol, init_lambda = init_lambda)
       coef_t <- result_w_t$beta_trans
       coef_c <- -result_w_c$beta_trans
       ps_t <- logistic(x = x_ps0 %*% coef_t)
@@ -109,7 +113,8 @@ dbw_internal <- function (estimand, data, lambda, method, method_y, response, x_
       converged <- c(result_w_t$converged, result_w_c$converged)
     } else if (estimand == "AO") {
       result_w <- dbw0(initval = initval, lambda = lambda, response = response, 
-                       x_ps = x_ps, weights = weights, svdx_ps = svdx_ps)
+                       x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
+                       tol = tol, init_lambda = init_lambda)
       coef <- result_w$beta_trans
       ps <- logistic(x = x_ps0 %*% coef)
       est_weights <- invprob(ps = ps, response = response, estimand = "AO", weights = weights)

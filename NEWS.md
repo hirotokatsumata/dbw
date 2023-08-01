@@ -1,3 +1,11 @@
+# dbw 1.0.0
+### Major changes
+* Improve the DC algorithm for "method = "dbw"".
+### Minor changes
+* Revise the variance-covariance matrix estimation for "method = "dbw"".
+* Add "tol" option, which is the tolerance parameter for "method = "dbw"".
+* Add "init_lambda" option, which is a parameter for "method = "dbw"" to set the lambda value for the initial values estimation.
+
 # dbw 0.5.0
 ### Minor changes
 * Revert the internal calculation of eta when lambda > 0.
@@ -22,7 +30,7 @@
 
 # dbw 0.2.1
 ### Bug fixes
-* Outcome name extraction for method == "AO".
+* Outcome name extraction for "method = "AO"".
 
 # dbw 0.2.0
 ### Minor changes

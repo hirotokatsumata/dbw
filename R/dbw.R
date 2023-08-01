@@ -25,7 +25,9 @@
 #' covariate balancing weighting and entropy balancing weighting, \code{dbw} runs
 #' much faster than the original functions (\code{\link[CBPS]{CBPS}} and \code{\link[ebal]{ebalance}}) 
 #' by using loss-function-based algorithms, which also results in more 
-#' accurate covariate balance.
+#' accurate covariate balance. For the ATT and ATC estimation, the distribution
+#' balancing weighting, covariate balancing weighting, and entropy balancing 
+#' weighting are theoretically equivalent and \code{dbw} implements accordingly.
 #'
 #' The parameter of interest is estimated by the AIPW estimator, where inverse
 #' probability weights are standardized within each treatment group by being 
@@ -35,7 +37,8 @@
 #' \eqn{(t_i - \pi_i) / \pi_i} for the ATC estimation, and
 #' \eqn{t_i / \pi_i} for the missing outcome cases. The resulting inverse probability 
 #' weights sum to 1 for the distribution balancing weighting, covariate 
-#' balancing weighting, and entropy balancing weighting estimators.
+#' balancing weighting, and entropy balancing weighting estimators without 
+#' regularization.
 #'
 #' The variance-covariance matrix for the parameter of interest and ancillary 
 #' parameters is calculated using the sandwich variance formula obtained in the 
@@ -97,6 +100,10 @@
 #' @param weights an optional vector of ‘prior weights’ (e.g. sampling weights)
 #'   to be used in the fitting process. Should be NULL or a numeric vector.
 #' @param clevel confidence levels. Default is 0.95.
+#' @param tol a tolerance parameter for \code{method = "dbw"}. Default is 1e-10.
+#' @param init_lambda a parameter for \code{method = "dbw"} to set the lambda value 
+#'   for the initial values estimation, where \eqn{lambda_init = lambda * init_lambda}. 
+#'   Default is 0.01.
 #'
 #' @return \code{dbw} returns an object of "dbw" class. 
 #'
@@ -326,7 +333,7 @@
 #' summary(fitmlem_hj)
 dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
                  method_y = "wls", data, vcov = TRUE, lambda = 0, 
-                 weights = NULL, clevel = 0.95) {
+                 weights = NULL, clevel = 0.95, tol = 1e-10, init_lambda = 0.01) {
   # Check
   if (estimand %in% c("ATE", "ATT", "ATC", "AO", "ATEcombined") == 0) {
     stop("estimand must be \"ATE\", \"ATT\", \"ATC\", 
@@ -352,6 +359,9 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   }
   if (min(clevel) <= 0 | max(clevel) >= 1) {
     stop("clevel must be between 0 and 1")
+  }
+  if (method == "dbw" & tol > 1e-6) {
+    warning("\"tol\" may be too large. The algorithm might not converge even when judged to do.")
   }
   call <- match.call()
   data <- data.frame(data)
@@ -434,9 +444,11 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
                          z = z,
                          weights = weights,
                          vcov = vcov,
-                         formula_y = formula_y)
+                         formula_y = formula_y,
+                         tol = tol,
+                         init_lambda = init_lambda)
   if (sum(result$converged == FALSE) > 0) {
-    warning("estimation algorithm is not converged. Estimates are not reliable")
+    warning("estimation algorithm did not converge. Estimates are not reliable")
   }
   if (vcov == TRUE) {
     cilength <- sqrt(diag(result$varcov)[nrow(result$varcov)]) * 
