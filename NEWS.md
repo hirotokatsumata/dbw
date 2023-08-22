@@ -1,3 +1,7 @@
+# dbw 1.0.1
+### Minor changes
+* Use dontrun() in the example for the time constraint.
+
 # dbw 1.0.0
 ### Major changes
 * Improve the DC algorithm for "method = "dbw"".

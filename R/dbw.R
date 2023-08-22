@@ -285,6 +285,7 @@
 #' summary(fitcbwmcmb)
 #'
 #'
+#' dontrun{
 #' # Formula for a misspecified outcome model for the GAM
 #' library(mgcv)
 #' formula_y_gam <- stats::as.formula(y ~ s(x1mis) + s(x2mis) + 
@@ -316,7 +317,7 @@
 #'                   method_y = "logit", data = df, vcov = TRUE, 
 #'                   lambda = 0, weights = NULL, clevel = 0.95)
 #' summary(fitdbwmbin)
-#'
+#' }
 #'
 #' # Standard logistic regression with the Horvitz-Thompson estimator
 #' fitmlem_ht <- dbw(formula_y = y ~ 0, formula_ps = formula_ps_m, 
