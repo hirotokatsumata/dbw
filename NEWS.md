@@ -1,3 +1,11 @@
+# dbw 1.0.3
+### Bug fixes
+* Fix typos in DESCRIPTION file and an error in dbw().
+
+# dbw 1.0.2
+### Bug fixes
+* Fix typos and delete unnecessary spaces in the DESCRIPTION file.
+
 # dbw 1.0.1
 ### Minor changes
 * Use dontrun() in the example for the time constraint.
