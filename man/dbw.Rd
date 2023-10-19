@@ -189,26 +189,26 @@ tau <- 10
 set.seed(12345)
 n <- 1000
 X <- matrix(stats::rnorm(n * 4, mean = 0, sd = 1), nrow = n, ncol = 4)
-prop <- 1 / (1 + exp(X[, 1] - 0.5 * X[, 2] + 
+prop <- 1 / (1 + exp(X[, 1] - 0.5 * X[, 2] +
                      0.25 * X[, 3] + 0.1 * X[, 4]))
 treat <- rbinom(n, 1, prop)
-y <- 210 + 
-     27.4 * X[, 1] + 13.7 * X[, 2] + 13.7 * X[, 3] + 13.7 * X[, 4] + 
+y <- 210 +
+     27.4 * X[, 1] + 13.7 * X[, 2] + 13.7 * X[, 3] + 13.7 * X[, 4] +
      tau * treat + stats::rnorm(n = n, mean = 0, sd = 1)
 ybinom <- (y > 210) + 0
 df0 <- data.frame(X, treat, y, ybinom)
 colnames(df0) <- c("x1", "x2", "x3", "x4", "treat", "y", "ybinom")
 
 # Variables for a misspecified model
-Xmis <- data.frame(x1mis = exp(X[, 1] / 2), 
+Xmis <- data.frame(x1mis = exp(X[, 1] / 2),
                    x2mis = X[, 2] * (1 + exp(X[, 1]))^(-1) + 10,
-                   x3mis = (X[, 1] * X[, 3] / 25 + 0.6)^3, 
+                   x3mis = (X[, 1] * X[, 3] / 25 + 0.6)^3,
                    x4mis = (X[, 2] + X[, 4] + 20)^2)
 
 # Data frame and formulas for propensity score estimation
 df <- data.frame(df0, Xmis)
 formula_ps_c <- stats::as.formula(treat ~ x1 + x2 + x3 + x4)
-formula_ps_m <- stats::as.formula(treat ~ x1mis + x2mis + 
+formula_ps_m <- stats::as.formula(treat ~ x1mis + x2mis +
                                           x3mis + x4mis)
 
 # Formula for a misspecified outcome model
@@ -218,31 +218,31 @@ formula_y <- stats::as.formula(y ~ x1mis + x2mis + x3mis + x4mis)
 # Correct propensity score model
 
 # Distribution balancing weighting without regularization
-fitdbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
+fitdbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
                estimand = "ATE", method = "dbw",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 fitdbwc
 summary(fitdbwc)
 
 # Covariate balancing weighting function without regularization
-fitcbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
+fitcbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
                estimand = "ATE", method = "cb",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwc)
 
 # Entropy balancing weighting function without regularization
-fitebwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
+fitebwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
                estimand = "ATE", method = "eb",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitebwc)
 
 # Standard logistic regression
-fitmlec <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
+fitmlec <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
                estimand = "ATE", method = "mle",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlec)
 
@@ -250,66 +250,67 @@ summary(fitmlec)
 # Misspecified propensity score model
 
 # Distribution balancing weighting without regularization
-fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "dbw",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitdbwm)
 
 # Covariate balancing weighting function without regularization
-fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "cb",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwm)
 
 # Entropy balancing weighting function without regularization
-fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "eb",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitebwm)
 
 # Standard logistic regression
-fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "mle",
-               method_y = "wls", data = df, vcov = TRUE, 
+               method_y = "wls", data = df, vcov = TRUE,
                lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem)
 
 # Distribution balancing weighting with regularization
 # Standardization
-res_std_comp <- std_comp(formula_y = formula_y, 
-                         formula_ps = formula_ps_m, 
-                         estimand = "ATE", method_y = "wls", 
+res_std_comp <- std_comp(formula_y = formula_y,
+                         formula_ps = formula_ps_m,
+                         estimand = "ATE", method_y = "wls",
                          data = df, std = TRUE,
                          weights = NULL)
-fitdbwmr <- dbw(formula_y = formula_y, 
-                formula_ps = res_std_comp$formula_ps, 
+fitdbwmr <- dbw(formula_y = formula_y,
+                formula_ps = res_std_comp$formula_ps,
                 estimand = "ATE", method = "dbw", method_y = "wls",
-                data = res_std_comp$data, vcov = TRUE, 
-                lambda = 0.01, weights = res_std_comp$weights, 
+                data = res_std_comp$data, vcov = TRUE,
+                lambda = 0.01, weights = res_std_comp$weights,
                 clevel = 0.95)
 summary(fitdbwmr)
 
-# Covariate balancing weighting function with an estimating equation 
+# Covariate balancing weighting function with an estimating equation
 #  for the original covariate balancing propensity score method
-fitcbwmcmb <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitcbwmcmb <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                   estimand = "ATEcombined", method = "cb",
-                  method_y = "wls", data = df, vcov = TRUE, 
+                  method_y = "wls", data = df, vcov = TRUE,
                   lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwmcmb)
 
 
+\dontrun{
 # Formula for a misspecified outcome model for the GAM
 library(mgcv)
-formula_y_gam <- stats::as.formula(y ~ s(x1mis) + s(x2mis) + 
+formula_y_gam <- stats::as.formula(y ~ s(x1mis) + s(x2mis) +
                                        s(x3mis)+ s(x4mis))
 
 # Distribution balancing weighting with the GAM
-fitdbwmg <- dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m, 
+fitdbwmg <- dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m,
                 estimand = "ATE", method = "dbw",
-                method_y = "gam", data = df, vcov = TRUE, 
+                method_y = "gam", data = df, vcov = TRUE,
                 lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitdbwmg)
 
@@ -322,29 +323,29 @@ ATEbinom <- mean(ybinom_t - ybinom_c)
 ATEbinom
 
 # Formula for a misspecified binary outcome model
-formula_y_bin <- stats::as.formula(ybinom ~ x1mis + x2mis + 
+formula_y_bin <- stats::as.formula(ybinom ~ x1mis + x2mis +
                                             x3mis + x4mis)
 
 # Distribution balancing weighting for the binary outcome
-fitdbwmbin <- dbw(formula_y = formula_y_bin, 
-                  formula_ps = formula_ps_m, 
+fitdbwmbin <- dbw(formula_y = formula_y_bin,
+                  formula_ps = formula_ps_m,
                   estimand = "ATE", method = "dbw",
-                  method_y = "logit", data = df, vcov = TRUE, 
+                  method_y = "logit", data = df, vcov = TRUE,
                   lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitdbwmbin)
-
+}
 
 # Standard logistic regression with the Horvitz-Thompson estimator
-fitmlem_ht <- dbw(formula_y = y ~ 0, formula_ps = formula_ps_m, 
+fitmlem_ht <- dbw(formula_y = y ~ 0, formula_ps = formula_ps_m,
                   estimand = "ATE", method = "mle",
-                  method_y = "wls", data = df, vcov = TRUE, 
+                  method_y = "wls", data = df, vcov = TRUE,
                   lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem_ht)
 
 # Standard logistic regression with the Hajek estimator
-fitmlem_hj <- dbw(formula_y = y ~ 1, formula_ps = formula_ps_m, 
+fitmlem_hj <- dbw(formula_y = y ~ 1, formula_ps = formula_ps_m,
                   estimand = "ATE", method = "mle",
-                  method_y = "wls", data = df, vcov = TRUE, 
+                  method_y = "wls", data = df, vcov = TRUE,
                   lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem_hj)
 }
