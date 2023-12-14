@@ -64,9 +64,10 @@
 #'
 #' @param formula_y an object of class \code{\link[stats]{formula}} (or one that
 #'   can be coerced to that class): a symbolic description of the potential
-#'   outcome model to be fitted. When you want to use non-DR type estimators,
-#'   only include "1" in the right hand side of the formula for the Hajek
-#'   estimator and only include "0" for the Horvitz-Thompson estimator.
+#'   outcome model to be fitted. This is a model for potential outcomes, so do not
+#'   include treatment variable in the model. When you want to use non-DR type 
+#'   estimators, only include "1" in the right hand side of the formula for the 
+#'   Hajek estimator and only include "0" for the Horvitz-Thompson estimator.
 #'   See example below for more details.
 #' @param formula_ps an object of class \code{\link[stats]{formula}} (or one that
 #'   can be coerced to that class): a symbolic description of the propensity score
