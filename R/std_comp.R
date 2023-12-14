@@ -187,7 +187,7 @@ std_comp <- function (formula_y, formula_ps, estimand = "ATE", method_y = "wls",
   model_mat <- data.frame(model_mat)
   names_x <- as.character(names(model_mat))
   names_x <- names_x[(names_x != "X.Intercept.")]
-  covariates <- model_mat[, names_x]
+  covariates <- as.matrix(model_mat[, names_x])
   mean_x <- numeric(ncol(covariates))
   sd_x <- numeric(ncol(covariates))
   m <- sum(weights > 0)
