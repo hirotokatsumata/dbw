@@ -420,7 +420,7 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   x_ps <- as.matrix(stats::model.matrix(formula_ps, model_ps))
   N <- nrow(data)
   if (lambda > 0 & abs(1 - max(apply(x_ps, 2, stats::sd))) > 1e-3) {
-    warning("Use scale() function before dbw() function when lambda > 0")
+    warning("Use std_comp() function before dbw() function when lambda > 0")
   }
   if (setequal(response, c(0, 1)) == FALSE) {
     stop("treatment (response) variable must be binary (0, 1)")
