@@ -419,6 +419,11 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   response <- c(stats::model.extract(model_ps, "response"))
   attr(response, which = "names") <- NULL
   x_ps <- as.matrix(stats::model.matrix(formula_ps, model_ps))
+  response_name <- attr(model_ps, "names")[1]
+  z_response <- which(colnames(z) == response_name)
+  if(length(z_response) > 0) {
+    stop("formula_y must not include a treatment variable")
+  }
   N <- nrow(data)
   if (lambda > 0 & abs(1 - max(apply(x_ps, 2, stats::sd))) > 1e-3) {
     warning("Use std_comp() function before dbw() function when lambda > 0")
