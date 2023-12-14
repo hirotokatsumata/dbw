@@ -3,7 +3,7 @@ svdtranscoef <- function (coef, svdx) {
   c(solve(diag(svdx$d) %*% t(svdx$v)) %*% coef)
 }
 
-## Derivarives of the SVDed beta
+## Derivatives of the SVDed beta
 deriv_svdtranscoef <- function (svdx) {
   solve(diag(svdx$d) %*% t(svdx$v))
 }
