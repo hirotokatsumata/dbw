@@ -55,7 +55,6 @@ dca <- function (init, lambda, response, x_ps, weights, svdx_ps,
       break
     }
   }
-  x_ps_trans <- x_ps %*% diag(svdx_ps$d) %*% t(svdx_ps$v)
   beta_trans <- svdtranscoef(coef = beta, svdx = svdx_ps)
   converged <- as.logical(converged != 0)
   list(beta_trans = beta_trans, converged = converged)
