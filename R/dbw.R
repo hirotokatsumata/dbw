@@ -422,7 +422,7 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   response_name <- attr(model_ps, "names")[1]
   z_response <- which(colnames(z) == response_name)
   if(length(z_response) > 0) {
-    stop("formula_y must not include a treatment variable")
+    stop("formula_y must not include the treatment variable")
   }
   N <- nrow(data)
   if (lambda > 0 & abs(1 - max(apply(x_ps, 2, stats::sd))) > 1e-3) {
