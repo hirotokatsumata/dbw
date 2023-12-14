@@ -22,7 +22,7 @@ cblossgradient <- function (beta, estimand, lambda, response, x_ps, weights, svd
   }
   beta_trans <- svdtranscoef(coef = beta, svdx = svdx_ps)
   beta_trans_deriv <- deriv_svdtranscoef(svdx = svdx_ps)
-  regularization <- c(lambda * t(beta_trans_deriv) %*% beta_trans) * length(response)
+  regularization <- c(t(beta_trans_deriv) %*% (lambda * beta_trans)) * length(response)
   apply(fde, 2, sum) + regularization
 }
 
@@ -42,7 +42,7 @@ eblossgradient <- function (beta, lambda, response, x_ps, weights, svdx_ps) {
   fde <- -(response / ps - 1) * x_ps * weights
   beta_trans <- svdtranscoef(coef = beta, svdx = svdx_ps)
   beta_trans_deriv <- deriv_svdtranscoef(svdx = svdx_ps)
-  regularization <- c(lambda * t(beta_trans_deriv) %*% beta_trans) * length(response)
+  regularization <- c(t(beta_trans_deriv) %*% (lambda * beta_trans)) * length(response)
   apply(fde, 2, sum) + regularization
 }
 
@@ -61,6 +61,6 @@ mlelossgradient <- function (beta, estimand, lambda, response, x_ps, weights, sv
   fde <- -(response - ps) * x_ps * weights
   beta_trans <- svdtranscoef(coef = beta, svdx = svdx_ps)
   beta_trans_deriv <- deriv_svdtranscoef(svdx = svdx_ps)
-  regularization <- c(lambda * t(beta_trans_deriv) %*% beta_trans) * length(response)
+  regularization <- c(t(beta_trans_deriv) %*% (lambda * beta_trans)) * length(response)
   apply(fde, 2, sum) + regularization
 }

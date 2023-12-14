@@ -24,7 +24,7 @@ u_gradient <- function (beta, beta_old, lambda, response, x_ps, weights, svdx_ps
             sum(1 - ps_old + log(ps_old)) * response * (1 - ps_old) / ps_old / n0 -
             sum(response / ps_old - 1) * (1 - ps_old)^2 / n0) * x_ps) * weights
   fde <- fde1 - fde2
-  regularization <- c(lambda * t(beta_trans_deriv) %*% beta_trans) * length(response)
+  regularization <- c(t(beta_trans_deriv) %*% (lambda * beta_trans)) * length(response)
   apply(fde, 2, sum) + regularization
 }
 
