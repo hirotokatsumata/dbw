@@ -1,3 +1,13 @@
+# dbw 1.0.4
+### Minor changes
+* Delete unnecessary calculation in DC algorithm.
+* Add explanation for "formula_y" not to include the treatment variable.
+* Add an error message when "formula_y" includes the treatment variable.
+* Fix typos in a warning message in dbw().
+### Bug fixes
+* Fix issues in calculating the derivatives of the regularization terms.
+* Fix an issue in std_comp() function when the number of covariates is one.
+
 # dbw 1.0.3
 ### Bug fixes
 * Fix typos in DESCRIPTION file and an error in dbw().
