@@ -1,3 +1,13 @@
+# dbw 1.1.0
+### Minor changes
+* Add "normalize" argument to dbw() function for "method = "dbw"". If set "FALSE", it estimates the non-normalized distribution balancing weights.
+* Add internal functions for estimating the non-normalized distribution balancing weights.
+* Add "normalize" component to dbw class.
+* Add some examples for estimating non-normalized distribution balancing weights.
+* Update the README files
+### Bug fixes
+* Revise error and warning messages.
+
 # dbw 1.0.4
 ### Minor changes
 * Delete unnecessary calculation in DC algorithm.

@@ -88,17 +88,17 @@ formula_y <- stats::as.formula(y ~ x1mis + x2mis + x3mis + x4mis)
 ### Correct propensity score model
 
 ``` r
-# Distribution balancing weighting without regularization
+# Distribution balancing weighting with normalization and without regularization
 fitdbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
                estimand = "ATE", method = "dbw",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 fitdbwc
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
-#>     method = "dbw", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "dbw", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ATE estimate:  10.03
 #> 
@@ -136,8 +136,8 @@ summary(fitdbwc)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
-#>     method = "dbw", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "dbw", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -201,14 +201,14 @@ summary(fitdbwc)
 # Covariate balancing weighting function without regularization
 fitcbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
                estimand = "ATE", method = "cb",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwc)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
-#>     method = "cb", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "cb", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -272,14 +272,14 @@ summary(fitcbwc)
 # Entropy balancing weighting function without regularization
 fitebwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
                estimand = "ATE", method = "eb",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitebwc)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
-#>     method = "eb", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "eb", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -343,14 +343,14 @@ summary(fitebwc)
 # Standard logistic regression
 fitmlec <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
                estimand = "ATE", method = "mle",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = FALSE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlec)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
-#>     method = "mle", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "mle", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -410,22 +410,95 @@ summary(fitmlec)
 #> Effective sample size for the ATE estimation:
 #>   For estimating E[Y(1)]: 282.08 
 #>   For estimating E[Y(0)]:   263.75
+
+# Distribution balancing weighting without normalization and without regularization
+fitdbwcnn <- dbw(formula_y = formula_y, formula_ps = formula_ps_c, 
+                 estimand = "ATE", method = "dbw",
+                 method_y = "wls", data = df, normalize = FALSE, 
+                 vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
+#> Warning in dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand =
+#> "ATE", : estimated weights are not normalized
+summary(fitdbwcnn)
+#> 
+#> Call: 
+#> dbw(formula_y = formula_y, formula_ps = formula_ps_c, estimand = "ATE", 
+#>     method = "dbw", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
+#> 
+#> ############################################################
+#> ATE estimate:
+#>     Estimate Std. Error z value Pr(>|z|)    
+#> ATE    9.543     0.5952   16.03        0 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> ############################################################
+#> 
+#> Estimate of E[Y(1)] and E[Y(0)]:
+#>      Estimate Std. Error z value Pr(>|z|)    
+#> mu_t    220.4      1.247   176.8        0 ***
+#> mu_c    210.9      1.186   177.9        0 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the propensity score model estimation for estimating E[Y(1)]:
+#>                  Estimate Std. Error z value  Pr(>|z|)    
+#> ps_t_(Intercept) -0.07246     0.1024 -0.7076 4.792e-01    
+#> ps_t_x1          -1.18369     0.1719 -6.8844 5.804e-12 ***
+#> ps_t_x2           0.59795     0.1245  4.8021 1.570e-06 ***
+#> ps_t_x3          -0.22692     0.1363 -1.6654 9.583e-02   .
+#> ps_t_x4           0.03168     0.1224  0.2588 7.958e-01    
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the propensity score model estimation for estimating E[Y(0)]:
+#>                  Estimate Std. Error z value  Pr(>|z|)    
+#> ps_c_(Intercept) -0.05808    0.09742 -0.5962 5.510e-01    
+#> ps_c_x1          -1.03898    0.15141 -6.8619 6.797e-12 ***
+#> ps_c_x2           0.42285    0.11229  3.7657 1.661e-04 ***
+#> ps_c_x3          -0.27476    0.15474 -1.7756 7.579e-02   .
+#> ps_c_x4           0.16160    0.12143  1.3309 1.832e-01    
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the outcome model estimation for estimating E[Y(1)]:
+#>                       Estimate Std. Error z value Pr(>|z|)    
+#> outcome_t_(Intercept)   24.812   12.85168   1.931  0.05353   .
+#> outcome_t_x1mis         42.213    1.43975  29.319  0.00000 ***
+#> outcome_t_x2mis          2.623    1.66898   1.572  0.11605    
+#> outcome_t_x3mis        -54.655   36.37724  -1.502  0.13298    
+#> outcome_t_x4mis          0.330    0.02139  15.425  0.00000 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the outcome model estimation for estimating E[Y(0)]:
+#>                       Estimate Std. Error z value  Pr(>|z|)    
+#> outcome_c_(Intercept)  50.7071    17.5344   2.892 0.0038297  **
+#> outcome_c_x1mis        41.1159     1.5239  26.981 0.0000000 ***
+#> outcome_c_x2mis        -7.5699     1.9643  -3.854 0.0001163 ***
+#> outcome_c_x3mis       134.7874    38.1127   3.537 0.0004054 ***
+#> outcome_c_x4mis         0.3953     0.0165  23.958 0.0000000 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Effective sample size for the ATE estimation:
+#>   For estimating E[Y(1)]: 280.46 
+#>   For estimating E[Y(0)]:   350.35
 ```
 
 ### Misspecified propensity score model
 
 ``` r
-# Distribution balancing weighting without regularization
+# Distribution balancing weighting with normalization and without regularization
 fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
                estimand = "ATE", method = "dbw",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitdbwm)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "dbw", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "dbw", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -489,14 +562,14 @@ summary(fitdbwm)
 # Covariate balancing weighting function without regularization
 fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
                estimand = "ATE", method = "cb",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwm)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "cb", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "cb", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -560,14 +633,14 @@ summary(fitcbwm)
 # Entropy balancing weighting function without regularization
 fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
                estimand = "ATE", method = "eb",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitebwm)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "eb", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "eb", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -631,14 +704,14 @@ summary(fitebwm)
 # Standard logistic regression
 fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
                estimand = "ATE", method = "mle",
-               method_y = "wls", data = df, vcov = TRUE, 
-               lambda = 0, weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = FALSE, 
+               vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "mle", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "mle", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -699,18 +772,92 @@ summary(fitmlem)
 #>   For estimating E[Y(1)]: 100.94 
 #>   For estimating E[Y(0)]:   395.48
 
-# Distribution balancing weighting with regularization
+# Distribution balancing weighting without normalization and without regularization
+fitdbwmnn <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+                 estimand = "ATE", method = "dbw",
+                 method_y = "wls", data = df, normalize = FALSE, 
+                 vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
+#> Warning in dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand =
+#> "ATE", : estimated weights are not normalized
+summary(fitdbwmnn)
+#> 
+#> Call: 
+#> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATE", 
+#>     method = "dbw", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
+#> 
+#> ############################################################
+#> ATE estimate:
+#>     Estimate Std. Error z value  Pr(>|z|)    
+#> ATE    6.266     0.7923   7.908 2.665e-15 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> ############################################################
+#> 
+#> Estimate of E[Y(1)] and E[Y(0)]:
+#>      Estimate Std. Error z value Pr(>|z|)    
+#> mu_t    218.2      1.250   174.5        0 ***
+#> mu_c    212.0      1.246   170.2        0 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the propensity score model estimation for estimating E[Y(1)]:
+#>                   Estimate Std. Error  z value  Pr(>|z|)    
+#> ps_t_(Intercept) -4.450192   1.334417 -3.33493 8.532e-04 ***
+#> ps_t_x1mis       -1.557728   0.238994 -6.51786 7.132e-11 ***
+#> ps_t_x2mis        0.420731   0.191730  2.19439 2.821e-02   *
+#> ps_t_x3mis        0.080172   3.318517  0.02416 9.807e-01    
+#> ps_t_x4mis        0.004619   0.003132  1.47482 1.403e-01    
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the propensity score model estimation for estimating E[Y(0)]:
+#>                   Estimate Std. Error z value  Pr(>|z|)    
+#> ps_c_(Intercept) -3.582849   1.961983 -1.8261 6.783e-02   .
+#> ps_c_x1mis       -2.411189   0.413959 -5.8247 5.721e-09 ***
+#> ps_c_x2mis        0.230817   0.287529  0.8028 4.221e-01    
+#> ps_c_x3mis        7.631834   6.079918  1.2553 2.094e-01    
+#> ps_c_x4mis        0.005414   0.002753  1.9665 4.925e-02   *
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the outcome model estimation for estimating E[Y(1)]:
+#>                       Estimate Std. Error z value Pr(>|z|)    
+#> outcome_t_(Intercept)  16.1437   12.26751   1.316 0.188185    
+#> outcome_t_x1mis        41.9532    1.10048  38.123 0.000000 ***
+#> outcome_t_x2mis         4.1782    1.54374   2.707 0.006799  **
+#> outcome_t_x3mis       -86.6533   29.25821  -2.962 0.003060  **
+#> outcome_t_x4mis         0.3256    0.02124  15.333 0.000000 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Coefficients for the outcome model estimation for estimating E[Y(0)]:
+#>                       Estimate Std. Error z value  Pr(>|z|)    
+#> outcome_c_(Intercept)  53.5921   15.20168   3.525 0.0004228 ***
+#> outcome_c_x1mis        41.2237    1.78932  23.039 0.0000000 ***
+#> outcome_c_x2mis        -7.1370    1.89505  -3.766 0.0001658 ***
+#> outcome_c_x3mis       107.0804   36.27837   2.952 0.0031610  **
+#> outcome_c_x4mis         0.3948    0.01721  22.944 0.0000000 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+#> 
+#> Effective sample size for the ATE estimation:
+#>   For estimating E[Y(1)]: 267.85 
+#>   For estimating E[Y(0)]:   377.78
+
+# Distribution balancing weighting with normalization and with regularization
 # Standardization
 res_std_comp <- std_comp(formula_y = formula_y, 
                          formula_ps = formula_ps_m, 
                          estimand = "ATE", method_y = "wls", 
                          data = df, std = TRUE,
                          weights = NULL)
+# Estimation
 fitdbwmr <- dbw(formula_y = formula_y, 
                 formula_ps = res_std_comp$formula_ps, 
                 estimand = "ATE", method = "dbw", method_y = "wls",
-                data = res_std_comp$data, vcov = TRUE, 
-                lambda = 0.01, weights = res_std_comp$weights, 
+                data = res_std_comp$data, normalize = TRUE, 
+                vcov = TRUE, lambda = 0.01, weights = res_std_comp$weights, 
                 clevel = 0.95)
 summary(fitdbwmr)
 #> Warning in summary.dbw(fitdbwmr): When lambda > 0, the uncertainty estimates may not be appropriate
@@ -719,7 +866,7 @@ summary(fitdbwmr)
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = res_std_comp$formula_ps, 
 #>     estimand = "ATE", method = "dbw", method_y = "wls", data = res_std_comp$data, 
-#>     vcov = TRUE, lambda = 0.01, weights = res_std_comp$weights, 
+#>     normalize = TRUE, vcov = TRUE, lambda = 0.01, weights = res_std_comp$weights, 
 #>     clevel = 0.95)
 #> 
 #> ############################################################
@@ -785,14 +932,14 @@ summary(fitdbwmr)
 #  for the original covariate balancing propensity score method
 fitcbwmcmb <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
                   estimand = "ATEcombined", method = "cb",
-                  method_y = "wls", data = df, vcov = TRUE, 
-                  lambda = 0, weights = NULL, clevel = 0.95)
+                  method_y = "wls", data = df, normalize = TRUE, 
+                  vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitcbwmcmb)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y, formula_ps = formula_ps_m, estimand = "ATEcombined", 
-#>     method = "cb", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "cb", method_y = "wls", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATEcombined estimate:
@@ -854,17 +1001,17 @@ formula_y_gam <- stats::as.formula(y ~ s(x1mis) + s(x2mis) +
 # Distribution balancing weighting with the GAM
 fitdbwmg <- dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m, 
                 estimand = "ATE", method = "dbw",
-                method_y = "gam", data = df, vcov = TRUE, 
-                lambda = 0, weights = NULL, clevel = 0.95)
+                method_y = "gam", data = df, normalize = TRUE, 
+                vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> Warning in dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m, estimand =
-#> "ATE", : variance is estimated only when method_y is "wls" or "logit"
+#> "ATE", : variance is estimated only when "method_y" is "wls" or "logit"
 summary(fitdbwmg)
 #> Warning in summary.dbw(fitdbwmg): "varcov" is empty
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "dbw", method_y = "gam", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "dbw", method_y = "gam", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ATE estimate:  8.688
 #> 
@@ -910,14 +1057,14 @@ formula_y_bin <- stats::as.formula(ybinom ~ x1mis + x2mis + x3mis + x4mis)
 # Distribution balancing weighting for the binary outcome
 fitdbwmbin <- dbw(formula_y = formula_y_bin, formula_ps = formula_ps_m, 
                   estimand = "ATE", method = "dbw",
-                  method_y = "logit", data = df, vcov = TRUE, 
-                  lambda = 0, weights = NULL, clevel = 0.95)
+                  method_y = "logit", data = df, normalize = TRUE, 
+                  vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitdbwmbin)
 #> 
 #> Call: 
 #> dbw(formula_y = formula_y_bin, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "dbw", method_y = "logit", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "dbw", method_y = "logit", data = df, normalize = TRUE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -985,14 +1132,14 @@ summary(fitdbwmbin)
 # Standard logistic regression with the Horvitz-Thompson estimator
 fitmlem_ht <- dbw(formula_y = y ~ 0, formula_ps = formula_ps_m, 
                   estimand = "ATE", method = "mle",
-                  method_y = "wls", data = df, vcov = TRUE, 
-                  lambda = 0, weights = NULL, clevel = 0.95)
+                  method_y = "wls", data = df, normalize = FALSE, 
+                  vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem_ht)
 #> 
 #> Call: 
 #> dbw(formula_y = y ~ 0, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "mle", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "mle", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:
@@ -1036,14 +1183,14 @@ summary(fitmlem_ht)
 # Standard logistic regression with the Hajek estimator
 fitmlem_hj <- dbw(formula_y = y ~ 1, formula_ps = formula_ps_m, 
                   estimand = "ATE", method = "mle",
-                  method_y = "wls", data = df, vcov = TRUE, 
-                  lambda = 0, weights = NULL, clevel = 0.95)
+                  method_y = "wls", data = df, normalize = FALSE, 
+                  vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 summary(fitmlem_hj)
 #> 
 #> Call: 
 #> dbw(formula_y = y ~ 1, formula_ps = formula_ps_m, estimand = "ATE", 
-#>     method = "mle", method_y = "wls", data = df, vcov = TRUE, 
-#>     lambda = 0, weights = NULL, clevel = 0.95)
+#>     method = "mle", method_y = "wls", data = df, normalize = FALSE, 
+#>     vcov = TRUE, lambda = 0, weights = NULL, clevel = 0.95)
 #> 
 #> ############################################################
 #> ATE estimate:

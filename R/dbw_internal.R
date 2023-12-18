@@ -1,5 +1,5 @@
 ## Distribution balancing weighting estimation function
-dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps, tol, init_lambda) {
+dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps, tol, init_lambda, normalize) {
   ## Borrowing initial values from cbw
   init <- stats::optim(par = initval, 
                        fn = cbloss, 
@@ -11,9 +11,17 @@ dbw0 <- function (initval, lambda, response, x_ps, weights, svdx_ps, tol, init_l
                        weights = weights, svdx_ps = svdx_ps)$par
 
   ## DC algorithm
-  result <- dca(init = init, lambda = lambda, response = response, x_ps = x_ps, 
-                weights = weights, svdx_ps = svdx_ps, 
-                tol = tol, maxiter = 1000, min_r = 50)
+  if (normalize == TRUE) {
+    ## With normalization
+    result <- dca(init = init, lambda = lambda, response = response, x_ps = x_ps, 
+                  weights = weights, svdx_ps = svdx_ps, 
+                  tol = tol, maxiter = 1000, min_r = 50)
+  } else { # normalize == FALSE
+    ## Without normalization
+    result <- dcann(init = init, lambda = lambda, response = response, x_ps = x_ps, 
+                    weights = weights, svdx_ps = svdx_ps, 
+                    tol = tol, maxiter = 1000, min_r = 50)
+  }
   result
 }
 
@@ -68,7 +76,7 @@ mlew <- function (initval, lambda, response, x_ps, weights, svdx_ps) {
 ## Distribution balancing weighting internal function
 dbw_internal <- function (estimand, data, lambda, method, method_y, 
                           response, x_ps, outcome, z, weights, 
-                          vcov, formula_y, tol, init_lambda) {
+                          vcov, formula_y, tol, init_lambda, normalize) {
   names_z <- colnames(z)
   names_z[apply(z, 2, stats::sd) == 0] <- "(Intercept)"
   names_x_ps <- colnames(x_ps)
@@ -99,10 +107,10 @@ dbw_internal <- function (estimand, data, lambda, method, method_y,
     if (estimand == "ATE") {
       result_w_t <- dbw0(initval = initval, lambda = lambda, response = response, 
                          x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
-                         tol = tol, init_lambda = init_lambda)
+                         tol = tol, init_lambda = init_lambda, normalize = normalize)
       result_w_c <- dbw0(initval = initval, lambda = lambda, response = 1 - response, 
                          x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
-                         tol = tol, init_lambda = init_lambda)
+                         tol = tol, init_lambda = init_lambda, normalize = normalize)
       coef_t <- result_w_t$beta_trans
       coef_c <- -result_w_c$beta_trans
       ps_t <- logistic(x = x_ps0 %*% coef_t)
@@ -114,7 +122,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y,
     } else if (estimand == "AO") {
       result_w <- dbw0(initval = initval, lambda = lambda, response = response, 
                        x_ps = x_ps, weights = weights, svdx_ps = svdx_ps, 
-                       tol = tol, init_lambda = init_lambda)
+                       tol = tol, init_lambda = init_lambda, normalize = normalize)
       coef <- result_w$beta_trans
       ps <- logistic(x = x_ps0 %*% coef)
       est_weights <- invprob(ps = ps, response = response, estimand = "AO", weights = weights)
@@ -261,7 +269,7 @@ dbw_internal <- function (estimand, data, lambda, method, method_y,
     } else if (method == "dbw") {
       hs1 <- varcov_dbw(ps = ps, beta_trans = coef, lambda = lambda, 
                         response = response, x_ps_trans = x_ps0, 
-                        weights = weights)
+                        weights = weights, normalize = normalize)
     } else if (method == "cb") {
       hs1 <- varcov_cbw(ps = ps, beta_trans = coef, lambda = lambda, 
                         response = response, x_ps_trans = x_ps0, 
@@ -427,10 +435,10 @@ dbw_internal <- function (estimand, data, lambda, method, method_y,
     } else if (method == "dbw") {
       hs11 <- varcov_dbw(ps = ps_t, beta_trans = coef_t, lambda = lambda, 
                          response = response, x_ps_trans = x_ps0, 
-                         weights = weights)
+                         weights = weights, normalize = normalize)
       hs21 <- varcov_dbw(ps = 1 - ps_c, beta_trans = coef_c, lambda = lambda, 
                          response = 1 - response, x_ps_trans = x_ps0, 
-                         weights = weights)
+                         weights = weights, normalize = normalize)
     } else if (method == "cb") {
       hs11 <- varcov_cbw(ps = ps_t, beta_trans = coef_t, lambda = lambda, 
                          response = response, x_ps_trans = x_ps0, 

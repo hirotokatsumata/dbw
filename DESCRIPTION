@@ -1,6 +1,6 @@
 Package: dbw
 Title: Doubly Robust Distribution Balancing Weighting Estimation
-Version: 1.0.4
+Version: 1.1.0
 Authors@R: 
     person("Hiroto", "Katsumata", 
            email = "hrt.katsumata@gmail.com", 

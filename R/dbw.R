@@ -93,6 +93,8 @@
 #'   \code{method_y = "wls"} or \code{method_y = "logit"}.
 #' @param data a data frame (or one that can be coerced to that class)
 #'   containing the outcomes and the variables in the model.
+#' @param normalize a logical parameter indicating whether to normalize the estimated
+#'   weights to sum up to one for each treatment group for \code{method = "dbw"}. Default is TRUE.
 #' @param vcov a logical parameter indicating whether to estimate the variance.
 #'   Default is TRUE.
 #' @param lambda a parameter taking 0 or larger specifying the degree of the
@@ -149,6 +151,8 @@
 #' \item{formula_ps}{the propensity score model formula specified.}
 #' \item{call}{the matched call.}
 #' \item{data}{the data argument.}
+#' \item{normalize}{a logical argument indicating whether to normalize the
+#'	 estimated weights for each treatment group for \code{method = "dbw"}.}
 #' \item{lambda}{the parameter specifying the degree of the L2-regularization.}
 #'
 #' @author Hiroto Katsumata
@@ -202,87 +206,118 @@
 #'
 #' # Correct propensity score model
 #'
-#' # Distribution balancing weighting without regularization
+#' # Distribution balancing weighting with normalization and
+#' #   without regularization
 #' fitdbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
 #'                estimand = "ATE", method = "dbw",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' fitdbwc
 #' summary(fitdbwc)
 #'
 #' # Covariate balancing weighting function without regularization
 #' fitcbwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
 #'                estimand = "ATE", method = "cb",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitcbwc)
 #'
 #' # Entropy balancing weighting function without regularization
 #' fitebwc <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
 #'                estimand = "ATE", method = "eb",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitebwc)
 #'
 #' # Standard logistic regression
 #' fitmlec <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
 #'                estimand = "ATE", method = "mle",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = FALSE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitmlec)
+#'
+#' # Distribution balancing weighting without normalization and
+#' #   without regularization
+#' fitdbwcnn <- dbw(formula_y = formula_y, formula_ps = formula_ps_c,
+#'                  estimand = "ATE", method = "dbw",
+#'                  method_y = "wls", data = df, normalize = FALSE,
+#'                  vcov = TRUE, lambda = 0, weights = NULL,
+#'                  clevel = 0.95)
+#' summary(fitdbwcnn)
 #'
 #'
 #' # Misspecified propensity score model
 #'
-#' # Distribution balancing weighting without regularization
+#' # Distribution balancing weighting with normalization and 
+#' #   without regularization
 #' fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
 #'                estimand = "ATE", method = "dbw",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitdbwm)
 #'
 #' # Covariate balancing weighting function without regularization
 #' fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
 #'                estimand = "ATE", method = "cb",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitcbwm)
 #'
 #' # Entropy balancing weighting function without regularization
 #' fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
 #'                estimand = "ATE", method = "eb",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = TRUE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitebwm)
 #'
 #' # Standard logistic regression
 #' fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
 #'                estimand = "ATE", method = "mle",
-#'                method_y = "wls", data = df, vcov = TRUE,
-#'                lambda = 0, weights = NULL, clevel = 0.95)
+#'                method_y = "wls", data = df, normalize = FALSE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
 #' summary(fitmlem)
 #'
-#' # Distribution balancing weighting with regularization
+#' # Distribution balancing weighting without normalization and 
+#' #   without regularization
+#' fitdbwmnn <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
+#'                estimand = "ATE", method = "dbw",
+#'                method_y = "wls", data = df, normalize = FALSE,
+#'                vcov = TRUE, lambda = 0, weights = NULL,
+#'                clevel = 0.95)
+#' summary(fitdbwmnn)
+#'
+#' # Distribution balancing weighting with normalization and 
+#' #   with regularization
 #' # Standardization
 #' res_std_comp <- std_comp(formula_y = formula_y,
 #'                          formula_ps = formula_ps_m,
 #'                          estimand = "ATE", method_y = "wls",
 #'                          data = df, std = TRUE,
 #'                          weights = NULL)
+#' # Estimation
 #' fitdbwmr <- dbw(formula_y = formula_y,
 #'                 formula_ps = res_std_comp$formula_ps,
 #'                 estimand = "ATE", method = "dbw", method_y = "wls",
-#'                 data = res_std_comp$data, vcov = TRUE,
-#'                 lambda = 0.01, weights = res_std_comp$weights,
-#'                 clevel = 0.95)
+#'                 data = res_std_comp$data, normalize = TRUE,
+#'                 vcov = TRUE, lambda = 0.01,
+#'                 weights = res_std_comp$weights, clevel = 0.95)
 #' summary(fitdbwmr)
 #'
 #' # Covariate balancing weighting function with an estimating equation
 #' #  for the original covariate balancing propensity score method
 #' fitcbwmcmb <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
 #'                   estimand = "ATEcombined", method = "cb",
-#'                   method_y = "wls", data = df, vcov = TRUE,
-#'                   lambda = 0, weights = NULL, clevel = 0.95)
+#'                   method_y = "wls", data = df, normalize = TRUE,
+#'                   vcov = TRUE, lambda = 0, weights = NULL,
+#'                   clevel = 0.95)
 #' summary(fitcbwmcmb)
 #'
 #'
@@ -295,8 +330,9 @@
 #' # Distribution balancing weighting with the GAM
 #' fitdbwmg <- dbw(formula_y = formula_y_gam, formula_ps = formula_ps_m,
 #'                 estimand = "ATE", method = "dbw",
-#'                 method_y = "gam", data = df, vcov = TRUE,
-#'                 lambda = 0, weights = NULL, clevel = 0.95)
+#'                 method_y = "gam", data = df, normalize = TRUE,
+#'                 vcov = TRUE, lambda = 0, weights = NULL,
+#'                 clevel = 0.95)
 #' summary(fitdbwmg)
 #'
 #'
@@ -315,52 +351,67 @@
 #' fitdbwmbin <- dbw(formula_y = formula_y_bin,
 #'                   formula_ps = formula_ps_m,
 #'                   estimand = "ATE", method = "dbw",
-#'                   method_y = "logit", data = df, vcov = TRUE,
-#'                   lambda = 0, weights = NULL, clevel = 0.95)
+#'                   method_y = "logit", data = df, normalize = TRUE,
+#'                   vcov = TRUE, lambda = 0, weights = NULL,
+#'                   clevel = 0.95)
 #' summary(fitdbwmbin)
 #' }
 #'
 #' # Standard logistic regression with the Horvitz-Thompson estimator
 #' fitmlem_ht <- dbw(formula_y = y ~ 0, formula_ps = formula_ps_m,
 #'                   estimand = "ATE", method = "mle",
-#'                   method_y = "wls", data = df, vcov = TRUE,
-#'                   lambda = 0, weights = NULL, clevel = 0.95)
+#'                   method_y = "wls", data = df, normalize = FALSE,
+#'                   vcov = TRUE, lambda = 0, weights = NULL,
+#'                   clevel = 0.95)
 #' summary(fitmlem_ht)
 #'
 #' # Standard logistic regression with the Hajek estimator
 #' fitmlem_hj <- dbw(formula_y = y ~ 1, formula_ps = formula_ps_m,
 #'                   estimand = "ATE", method = "mle",
-#'                   method_y = "wls", data = df, vcov = TRUE,
-#'                   lambda = 0, weights = NULL, clevel = 0.95)
+#'                   method_y = "wls", data = df, normalize = FALSE,
+#'                   vcov = TRUE, lambda = 0, weights = NULL,
+#'                   clevel = 0.95)
 #' summary(fitmlem_hj)
 dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
-                 method_y = "wls", data, vcov = TRUE, lambda = 0,
+                 method_y = "wls", data, normalize = TRUE, vcov = TRUE, lambda = 0,
                  weights = NULL, clevel = 0.95, tol = 1e-10, init_lambda = 0.01) {
   # Check
   if (estimand %in% c("ATE", "ATT", "ATC", "AO", "ATEcombined") == 0) {
-    stop("estimand must be \"ATE\", \"ATT\", \"ATC\",
+    stop("\"estimand\" must be \"ATE\", \"ATT\", \"ATC\",
          \"AO\", or \"ATEcombined\"")
   }
   if (estimand == "ATEcombined") {
     if (method != "cb") {
-      stop("ATEcombined estimand can only be used with \"method == cb\"")
+      stop("\"ATEcombined\" estimand can only be used with \"method == \"cb\"\"")
     }
   }
   if (method %in% c("dbw", "cb", "eb", "mle") == 0) {
-    stop("method must be \"dbw\", \"cb\", \"eb\", or \"mle\"")
+    stop("\"method\" must be \"dbw\", \"cb\", \"eb\", or \"mle\"")
   }
   if (method_y %in% c("wls", "logit", "gam", "gambinom") == 0) {
-    stop("method must be \"wls\", \"logit\", \"gam\", or \"gambinom\"")
+    stop("\"method_y\" must be \"wls\", \"logit\", \"gam\", or \"gambinom\"")
   }
   if (method_y %in% c("wls", "logit") == 0) {
-    warning("variance is estimated only when method_y is \"wls\" or \"logit\"")
+    warning("variance is estimated only when \"method_y\" is \"wls\" or \"logit\"")
     vcov <- FALSE
   }
+  if (is.logical(normalize) == FALSE) {
+    stop("\"normalize\" must be logical")
+  }
+  if (normalize == FALSE & method == "dbw") {
+    warning("estimated weights are not normalized")
+  }
+  if (normalize == TRUE & method == "mle") {
+    warning("estimated weights are not normalized when \"method == \"mle\"\"")
+  }
+  if (is.logical(vcov) == FALSE) {
+    stop("\"vcov\" must be logical")
+  }
   if (length(lambda) != 1) {
-    stop("length of lambda must be 1")
+    stop("length of \"lambda\" must be 1")
   }
   if (min(clevel) <= 0 | max(clevel) >= 1) {
-    stop("clevel must be between 0 and 1")
+    stop("\"clevel\" must be between 0 and 1")
   }
   if (method == "dbw" & tol > 1e-6) {
     warning("\"tol\" may be too large. The algorithm might not converge even when judged to do.")
@@ -372,7 +423,7 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   if (method_y %in% c("gam", "gambinom")) {
     if (!requireNamespace("mgcv", quietly = TRUE)) {
       stop(
-        "Package \"mgcv\" must be installed to use \"gam\" or \"gambinom\".",
+        "package \"mgcv\" must be installed to use \"gam\" or \"gambinom\".",
         call. = FALSE
       )
     }
@@ -422,11 +473,11 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   response_name <- attr(model_ps, "names")[1]
   z_response <- which(colnames(z) == response_name)
   if(length(z_response) > 0) {
-    stop("formula_y must not include the treatment variable")
+    stop("\"formula_y\" must not include the treatment variable")
   }
   N <- nrow(data)
   if (lambda > 0 & abs(1 - max(apply(x_ps, 2, stats::sd))) > 1e-3) {
-    warning("Use std_comp() function before dbw() function when lambda > 0")
+    warning("use std_comp() function before dbw() function when \"lambda\" > 0")
   }
   if (setequal(response, c(0, 1)) == FALSE) {
     stop("treatment (response) variable must be binary (0, 1)")
@@ -437,7 +488,7 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
     weights <- (weights[complete_model_ps])[complete_model_y]
   }
   if (length(weights) != N) {
-    stop("length of weights must be the same as the number of rows of data")
+    stop("length of \"weights\" must be the same as the number of rows of \"data\"")
   }
   # Estimation
   result <- dbw_internal(estimand = estimand,
@@ -453,7 +504,8 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
                          vcov = vcov,
                          formula_y = formula_y,
                          tol = tol,
-                         init_lambda = init_lambda)
+                         init_lambda = init_lambda,
+                         normalize = normalize)
   if (sum(result$converged == FALSE) > 0) {
     warning("estimation algorithm did not converge. Estimates are not reliable")
   }
@@ -473,6 +525,7 @@ dbw <- function (formula_y, formula_ps, estimand = "ATE", method = "dbw",
   result$formula_ps <- formula_ps
   result$call <- call
   result$data <- data
+  result$normalize <- normalize
   result$lambda <- lambda
   class(result) <- "dbw"
   result
