@@ -100,10 +100,11 @@ par(mar = c(5.1, 5.1, 4.1, 2.1)) # Just for adjusting plot margins
 # Misspecified propensity score model
 
 # Distribution balancing weighting without regularization
-fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitdbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "dbw",
-               method_y = "wls", data = df, lambda = 0, 
-               weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE,
+               vcov = TRUE, lambda = 0, weights = NULL,
+               clevel = 0.95)
 plot(fitdbwm, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
 
 # Non-absolute values
@@ -116,24 +117,27 @@ plot(fitdbwm, addcov = ~ x1 + x2 + x3 + x4,
 
 
 # Covariate balancing weighting function without regularization
-fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitcbwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "cb",
-               method_y = "wls", data = df, lambda = 0, 
-               weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE,
+               vcov = TRUE, lambda = 0, weights = NULL,
+               clevel = 0.95)
 plot(fitcbwm, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
 
 # Entropy balancing weighting function without regularization
-fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitebwm <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "eb",
-               method_y = "wls", data = df, lambda = 0, 
-               weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = TRUE,
+               vcov = TRUE, lambda = 0, weights = NULL,
+               clevel = 0.95)
 plot(fitebwm, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
 
 # Standard logistic regression
-fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m, 
+fitmlem <- dbw(formula_y = formula_y, formula_ps = formula_ps_m,
                estimand = "ATE", method = "mle",
-               method_y = "wls", data = df, lambda = 0, 
-               weights = NULL, clevel = 0.95)
+               method_y = "wls", data = df, normalize = FALSE,
+               vcov = TRUE, lambda = 0, weights = NULL,
+               clevel = 0.95)
 plot(fitmlem, addcov = ~ x1 + x2 + x3 + x4, threshold = c(0.1, 0.2))
 
 par(oldpar)

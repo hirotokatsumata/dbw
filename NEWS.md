@@ -1,3 +1,7 @@
+# dbw 1.1.1
+### Bug fixes
+* Update examples for plot.dbw() function.
+
 # dbw 1.1.0
 ### Minor changes
 * Add "normalize" argument to dbw() function for "method = "dbw"". If set "FALSE", it estimates the non-normalized distribution balancing weights.
