@@ -208,6 +208,7 @@ std_comp <- function (formula_y, formula_ps, estimand = "ATE", method_y = "wls",
   data <- data.frame(y, response)
   colnames(data) <- c(names_y, names_response)
   data <- data.frame(data, covariates)
+  colnames(data)[-c(1, 2)] <- names_x
   names(mean_x) <- names_x
   names(sd_x) <- names_x
   formula_new <- paste(names_response, " ~ ", paste(names_x, collapse = " + "))

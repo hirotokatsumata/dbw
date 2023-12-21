@@ -1,5 +1,9 @@
 # dbw 1.1.1
 ### Bug fixes
+* Fix an issue in assigning column names for std_comp() function when there is only one covariate for the propensity score model.
+
+# dbw 1.1.1
+### Bug fixes
 * Update examples for plot.dbw() function.
 
 # dbw 1.1.0
