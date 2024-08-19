@@ -157,8 +157,9 @@
 #'
 #' @author Hiroto Katsumata
 #'
-#' @references Katsumata, Hiroto. 2023. "How Should We Estimate Inverse
+#' @references Katsumata, Hiroto. 2024. "How Should We Estimate Inverse
 #'   Probability Weights with Possibly Misspecified Propensity Score Models?"
+#'   Political Science Research and Methods.
 #'
 #' Imai, Kosuke and Marc Ratkovic. 2014. "Covariate Balancing Propensity Score."
 #'   Journal of the Royal Statistical Society, Series B (Statistical Methodology)

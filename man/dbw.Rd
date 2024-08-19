@@ -392,8 +392,9 @@ fitmlem_hj <- dbw(formula_y = y ~ 1, formula_ps = formula_ps_m,
 summary(fitmlem_hj)
 }
 \references{
-Katsumata, Hiroto. 2023. "How Should We Estimate Inverse
+Katsumata, Hiroto. 2024. "How Should We Estimate Inverse
 Probability Weights with Possibly Misspecified Propensity Score Models?"
+Political Science Research and Methods.
 
 Imai, Kosuke and Marc Ratkovic. 2014. "Covariate Balancing Propensity Score."
 Journal of the Royal Statistical Society, Series B (Statistical Methodology)

@@ -7,12 +7,12 @@
 <!-- badges: end -->
 
 **dbw** implements the doubly robust distribution balancing weighting
-proposed by Katsumata (2023), which improves the augmented inverse
-probability weighting (AIPW) by estimating propensity scores with
-estimating equations suitable for the pre-specified parameter of
-interest (e.g., the average treatment effects or the average treatment
-effects on the treated) and estimating outcome models with the estimated
-inverse probability weights.
+proposed by Katsumata (2024) <doi:10.1017/psrm.2024.23>, which improves
+the augmented inverse probability weighting (AIPW) by estimating
+propensity scores with estimating equations suitable for the
+pre-specified parameter of interest (e.g., the average treatment effects
+or the average treatment effects on the treated) and estimating outcome
+models with the estimated inverse probability weights.
 
 It also implements the covariate balancing propensity score proposed by
 Imai and Ratkovic (2014) <doi:10.1111/rssb.12027> and the entropy
@@ -27,9 +27,9 @@ be used to estimate average outcomes in missing outcome cases.
 
 ## How to Cite
 
-<font size="4"> Katsumata, Hiroto. 2023. “How Should We Estimate Inverse
+<font size="4"> Katsumata, Hiroto. 2024. “How Should We Estimate Inverse
 Probability Weights with Possibly Misspecified Propensity Score Models?”
-</font>
+*Political Science Research and Methods*. </font>
 
 ## Installation
 

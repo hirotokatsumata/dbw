@@ -1,4 +1,8 @@
-# dbw 1.1.1
+# dbw 1.1.3
+### Minor changes
+* Add a citation of the article proposing the distribution balancing weighting (Katsumata 2024) published in Political Science Research and Methods
+
+# dbw 1.1.2
 ### Bug fixes
 * Fix an issue in assigning column names for std_comp() function when there is only one covariate for the propensity score model.
 
