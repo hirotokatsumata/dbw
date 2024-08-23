@@ -322,7 +322,7 @@
 #' summary(fitcbwmcmb)
 #'
 #'
-#' \dontrun{
+#' \donttest{
 #' # Formula for a misspecified outcome model for the GAM
 #' library(mgcv)
 #' formula_y_gam <- stats::as.formula(y ~ s(x1mis) + s(x2mis) +

@@ -1,3 +1,7 @@
+# dbw 1.1.4
+### Minor changes
+* replace dontrun{} with donttest{} in an example code in dbw() function
+
 # dbw 1.1.3
 ### Minor changes
 * Add a citation of the article proposing the distribution balancing weighting (Katsumata 2024) published in Political Science Research and Methods
