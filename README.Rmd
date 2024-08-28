@@ -31,12 +31,10 @@ Katsumata, Hiroto. 2024. "How Should We Estimate Inverse Probability Weights wit
 </font>
 
 ## Installation
-<!-- 
-You can install the release version of **dbw** from [CRAN](https://CRAN.R-project.org/dbw):
+You can install the release version of **dbw** from [CRAN](https://CRAN.R-project.org/package=dbw):
 ``` r
 install.packages("dbw")
 ```
--->
 
 You can install the development version of **dbw** from [GitHub](https://github.com/hirotokatsumata/dbw):
 ``` r

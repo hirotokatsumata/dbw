@@ -33,12 +33,12 @@ Probability Weights with Possibly Misspecified Propensity Score Models?”
 
 ## Installation
 
-<!-- 
-You can install the release version of **dbw** from [CRAN](https://CRAN.R-project.org/dbw):
+You can install the release version of **dbw** from
+[CRAN](https://CRAN.R-project.org/package=dbw):
+
 ``` r
 install.packages("dbw")
 ```
--->
 
 You can install the development version of **dbw** from
 [GitHub](https://github.com/hirotokatsumata/dbw):
